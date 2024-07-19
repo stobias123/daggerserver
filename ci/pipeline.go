@@ -17,6 +17,7 @@ func NewGithubServerPipeline() *GithubServerPipeline {
 }
 
 func (p *GithubServerPipeline) Run(opts pipeline.PipelineRunOpts) error {
+	log.Infof("Running pipeline %s", opts)
 	if opts.PullRequestEvent != nil {
 		return p.runPR(opts.PullRequestEvent)
 	}
