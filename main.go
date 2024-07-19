@@ -27,10 +27,10 @@ type DaggerServerImpl struct {
 	PushPipelines        []Pipeline
 }
 
-func NewDaggerServer() DaggerServer {
+func NewDaggerServer(pullRequestPipelines []Pipeline, pushPipelines []Pipeline) DaggerServer {
 	return &DaggerServerImpl{
-		PullRequestPipelines: []Pipeline{},
-		PushPipelines:        []Pipeline{},
+		PullRequestPipelines: pullRequestPipelines,
+		PushPipelines:        pushPipelines,
 	}
 }
 
