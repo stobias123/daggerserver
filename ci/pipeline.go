@@ -6,6 +6,7 @@ import (
 
 	"dagger.io/dagger"
 	"github.com/google/go-github/v63/github"
+	log "github.com/sirupsen/logrus"
 	"github.com/stobias123/daggerserver/pipeline"
 )
 
@@ -32,6 +33,7 @@ func (p *GithubServerPipeline) getSrc(client *dagger.Client, repoUrl string, com
 }
 
 func (p *GithubServerPipeline) runPR(prEvent *github.PullRequestEvent) error {
+	log.Infof("Running PR pipeline for pipeline %s", *prEvent.PullRequest.Head.SHA)
 	ctx := context.Background()
 	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
 	if err != nil {

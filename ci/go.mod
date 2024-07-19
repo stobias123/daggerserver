@@ -5,8 +5,10 @@ go 1.22.2
 require (
 	dagger.io/dagger v0.12.1
 	github.com/google/go-github/v63 v63.0.0
-	github.com/stobias123/daggerserver v0.0.0-20240719013419-18bce0affb70
+	github.com/stobias123/daggerserver v0.0.0-20240719013546-cc2c68a7a386
 )
+
+replace github.com/stobias123/daggerserver => ../
 
 require (
 	github.com/99designs/gqlgen v0.17.49 // indirect

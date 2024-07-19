@@ -70,6 +70,7 @@ func (d *DaggerServerImpl) Start() error {
 		}
 	})
 	// start the server listening on port 8080
+	log.Info("Starting server on port 8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		return err
 	}
