@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/cbrgm/githubevents/githubevents"
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v63/github"
 	log "github.com/sirupsen/logrus"
 	"github.com/stobias123/daggerserver/pipeline"
 )

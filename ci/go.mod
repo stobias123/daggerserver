@@ -4,7 +4,7 @@ go 1.22.2
 
 require (
 	dagger.io/dagger v0.12.1
-	github.com/stobias123/daggerserver v0.0.0-20240719011856-0a3acf2f389f
+	github.com/stobias123/daggerserver v0.0.0-20240719012410-95b8b495009a
 )
 
 require (
@@ -15,6 +15,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
+	github.com/google/go-github v17.0.0+incompatible // indirect
 	github.com/google/go-github/v63 v63.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
