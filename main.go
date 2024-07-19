@@ -11,19 +11,55 @@ import (
 )
 
 func main() {
+
+}
+
+// Repo is added. Webhook recieved.
+// Repo server is created.
+// Repo server
+
+type DaggerServer interface {
+	Start() error
+}
+
+type DaggerServerImpl struct {
+	PullRequestPipelines []Pipeline
+	PushPipelines        []Pipeline
+}
+
+func NewDaggerServer() DaggerServer {
+	return &DaggerServerImpl{
+		PullRequestPipelines: []Pipeline{},
+		PushPipelines:        []Pipeline{},
+	}
+}
+
+func (d *DaggerServerImpl) Start() error {
 	// create a new event handler
 	handle := githubevents.New("foobar123!")
-
-	handle.OnCheckRunEventAny(
-		func(deliveryID string, eventName string, event *github.CheckRunEvent) error {
-			log.Infof("Check Run Event Name: %s  Requested Action: %s", eventName, event.RequestedAction)
-			return nil
-		},
-	)
 
 	handle.OnPullRequestEventAny(
 		func(deliveryID string, eventName string, event *github.PullRequestEvent) error {
 			log.Infof("Pull Request Event Name: %s  Action: %s", eventName, event.GetAction())
+			for _, pipeline := range d.PullRequestPipelines {
+				err := pipeline.Run(PipelineRunOpts{PullRequestEvent: event})
+				if err != nil {
+					return err
+				}
+			}
+			return nil
+		},
+	)
+
+	handle.OnPushEventAny(
+		func(deliveryID string, eventName string, event *github.PushEvent) error {
+			log.Infof("Push Event Name: %s  Action: %s", eventName, event.GetAction())
+			for _, pipeline := range d.PushPipelines {
+				err := pipeline.Run(PipelineRunOpts{PushEvent: event})
+				if err != nil {
+					return err
+				}
+			}
 			return nil
 		},
 	)

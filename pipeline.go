@@ -1,9 +1,7 @@
 package main
 
 import (
-	"context"
-
-	"dagger.io/dagger"
+	"github.com/google/go-github/v63/github"
 )
 
 type GetSrcOpts struct {
@@ -11,7 +9,11 @@ type GetSrcOpts struct {
 	CommitSha string
 }
 
+type PipelineRunOpts struct {
+	PullRequestEvent *github.PullRequestEvent
+	PushEvent        *github.PushEvent
+}
+
 type Pipeline interface {
-	GetSrc(ctx context.Context, client *dagger.Client, opts GetSrcOpts) *dagger.Directory
-	Run(ctx context.Context, client *dagger.Client) error
+	Run(opts PipelineRunOpts) error
 }
