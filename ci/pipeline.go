@@ -17,9 +17,9 @@ func NewGithubServerPipeline() *GithubServerPipeline {
 }
 
 func (p *GithubServerPipeline) Run(opts pipeline.PipelineRunOpts) error {
-	log.Infof("Running pipeline %s", opts)
-	if opts.PullRequestEvent != nil {
-		return p.runPR(opts.PullRequestEvent)
+	log.Infof("Run called for repo: %s", *opts.PushEvent.Repo.Name)
+	if opts.PushEvent != nil {
+		return p.runPR(opts.PushEvent)
 	}
 	return nil
 }
@@ -33,14 +33,14 @@ func (p *GithubServerPipeline) getSrc(client *dagger.Client, repoUrl string, com
 	return client.Host().Directory(".")
 }
 
-func (p *GithubServerPipeline) runPR(prEvent *github.PullRequestEvent) error {
-	log.Infof("Running PR pipeline for pipeline %s", *prEvent.PullRequest.Head.SHA)
+func (p *GithubServerPipeline) runPR(pushEvent *github.PushEvent) error {
+	log.Infof("Running push pipeline for SHA: %s", *pushEvent.HeadCommit.SHA)
 	ctx := context.Background()
 	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
 	if err != nil {
 		return err
 	}
-	src := p.getSrc(client, *prEvent.Repo.URL, *prEvent.PullRequest.Head.SHA)
+	src := p.getSrc(client, *pushEvent.Repo.URL, *pushEvent.HeadCommit.SHA)
 	artifacts := client.Container().From("go:1.22").
 		WithDirectory("/app", src).
 		WithExec([]string{"go", "mod", "tidy"}).
