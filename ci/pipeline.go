@@ -4,15 +4,12 @@ import (
 	"os"
 
 	"dagger.io/dagger"
-	"github.com/stobias123/daggerserver"
 )
 
-type GithubServerPipeline struct {
-	srcOpts daggerserver.GetSrcOpts
-}
+type GithubServerPipeline struct{}
 
-func NewGithubServerPipeline(srcOpts daggerserver.GetSrcOpts) *GithubServerPipeline {
-	return &GithubServerPipeline{srcOpts: srcOpts}
+func NewGithubServerPipeline() *GithubServerPipeline {
+	return &GithubServerPipeline{}
 }
 
 func (p *GithubServerPipeline) GetSrc(client *dagger.Client) *dagger.Directory {

@@ -1,18 +1,14 @@
-package main
+package server
 
 import (
 	"fmt"
 	"net/http"
 
 	"github.com/cbrgm/githubevents/githubevents"
-	"github.com/google/go-github/v63/github"
-
+	"github.com/google/go-github/github"
 	log "github.com/sirupsen/logrus"
+	"github.com/stobias123/daggerserver/pipeline"
 )
-
-func main() {
-
-}
 
 // Repo is added. Webhook recieved.
 // Repo server is created.
@@ -23,11 +19,11 @@ type DaggerServer interface {
 }
 
 type DaggerServerImpl struct {
-	PullRequestPipelines []Pipeline
-	PushPipelines        []Pipeline
+	PullRequestPipelines []pipeline.Pipeline
+	PushPipelines        []pipeline.Pipeline
 }
 
-func NewDaggerServer(pullRequestPipelines []Pipeline, pushPipelines []Pipeline) DaggerServer {
+func NewDaggerServer(pullRequestPipelines []pipeline.Pipeline, pushPipelines []pipeline.Pipeline) DaggerServer {
 	return &DaggerServerImpl{
 		PullRequestPipelines: pullRequestPipelines,
 		PushPipelines:        pushPipelines,
@@ -41,8 +37,11 @@ func (d *DaggerServerImpl) Start() error {
 	handle.OnPullRequestEventAny(
 		func(deliveryID string, eventName string, event *github.PullRequestEvent) error {
 			log.Infof("Pull Request Event Name: %s  Action: %s", eventName, event.GetAction())
-			for _, pipeline := range d.PullRequestPipelines {
-				err := pipeline.Run(PipelineRunOpts{PullRequestEvent: event})
+			for _, pipe := range d.PullRequestPipelines {
+				opts := pipeline.PipelineRunOpts{
+					PullRequestEvent: event,
+				}
+				err := pipe.Run(opts)
 				if err != nil {
 					return err
 				}
@@ -54,8 +53,8 @@ func (d *DaggerServerImpl) Start() error {
 	handle.OnPushEventAny(
 		func(deliveryID string, eventName string, event *github.PushEvent) error {
 			log.Infof("Push Event Name: %s  Action: %s", eventName, event.GetAction())
-			for _, pipeline := range d.PushPipelines {
-				err := pipeline.Run(PipelineRunOpts{PushEvent: event})
+			for _, pipe := range d.PushPipelines {
+				err := pipe.Run(pipeline.PipelineRunOpts{PushEvent: event})
 				if err != nil {
 					return err
 				}

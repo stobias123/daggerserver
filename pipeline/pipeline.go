@@ -1,4 +1,4 @@
-package main
+package pipeline
 
 import (
 	"github.com/google/go-github/v63/github"

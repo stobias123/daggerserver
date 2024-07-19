@@ -4,7 +4,7 @@ go 1.22.2
 
 require (
 	dagger.io/dagger v0.12.1
-	github.com/stobias123/daggerserver v0.0.0-20240719005230-42b01db40ab9
+	github.com/stobias123/daggerserver v0.0.0-20240719011856-0a3acf2f389f
 )
 
 require (
