@@ -5,6 +5,7 @@ go 1.22.2
 require (
 	dagger.io/dagger v0.12.1
 	github.com/google/go-github/v63 v63.0.0
+	github.com/sirupsen/logrus v1.9.3
 	github.com/stobias123/daggerserver v0.0.0-20240719013546-cc2c68a7a386
 )
 
@@ -22,7 +23,6 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
-	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/sosodev/duration v1.3.1 // indirect
 	github.com/vektah/gqlparser/v2 v2.5.16 // indirect
 	go.opentelemetry.io/otel v1.27.0 // indirect

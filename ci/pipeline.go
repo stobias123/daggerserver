@@ -34,15 +34,16 @@ func (p *GithubServerPipeline) getSrc(client *dagger.Client, repoUrl string, com
 }
 
 func (p *GithubServerPipeline) runPR(pushEvent *github.PushEvent) error {
-	log.Infof("Running push pipeline for SHA: %s", *pushEvent.HeadCommit.SHA)
+	log.Infof("Running push pipeline for SHA: %s", pushEvent.HeadCommit.GetSHA())
 	ctx := context.Background()
 	client, err := dagger.Connect(ctx, dagger.WithLogOutput(os.Stdout))
 	if err != nil {
 		return err
 	}
-	src := p.getSrc(client, *pushEvent.Repo.URL, *pushEvent.HeadCommit.SHA)
-	artifacts := client.Container().From("go:1.22").
+	src := p.getSrc(client, *pushEvent.Repo.URL, pushEvent.HeadCommit.GetSHA())
+	artifacts := client.Container().From("golang:1.22").
 		WithDirectory("/app", src).
+		WithWorkdir("/app").
 		WithExec([]string{"go", "mod", "tidy"}).
 		WithExec([]string{"go", "build"})
 	client.Container().From("alpine:3.14").WithFile("/ci", artifacts.File("/app/ci"), dagger.ContainerWithFileOpts{Permissions: 0755}).Sync(ctx)
