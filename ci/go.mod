@@ -9,8 +9,6 @@ require (
 	github.com/stobias123/daggerserver v0.0.0-20240719013546-cc2c68a7a386
 )
 
-replace github.com/stobias123/daggerserver => ../
-
 require (
 	github.com/99designs/gqlgen v0.17.49 // indirect
 	github.com/Khan/genqlient v0.7.0 // indirect
